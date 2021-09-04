@@ -1,10 +1,5 @@
 #import requests
-
-'''
-Скопирован файл c 'https://drive.google.com/open?id=15fBsTB1ZU_BzEw5SJmlOMX2uuyi1xN1-' на локальный диск
-( прочитать с интернета не получилось )
-Буду признателен, если укажите как
-'''
+import pymorphy2
 
 # читаем с компа
 pf = open( r'c:\Downloads\text.txt', 'tr', encoding='utf-8')
@@ -26,13 +21,21 @@ print(lst)
 lst = list(  map( str.lower, lst )  )
 print( lst )
 
+# Л Е М М А Т И З А Ц И Я
+lst_m=[]
+morph = pymorphy2.MorphAnalyzer()
+for word in lst:
+    p = morph.parse( word )[0]
+    lst_m.append( p.normal_form )
+print('Лемматизация:\n', lst_m )
+
 # уникальные слова
-lstUnique = list(  set( lst )  )
+lstUnique = list(  set( lst_m )  )
 print( 'всего слов=', len(lst), 'Уникальных слов=',len( lstUnique )  )
 
 # словарь частотности слов
 dic = {}
-s = str( lst)
+s = str( lst_m)
 for word in lstUnique:
     n = s.count( word )
     dic[word] = n
